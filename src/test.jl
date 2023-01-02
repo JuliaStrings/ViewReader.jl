@@ -1,6 +1,7 @@
 
 include("./FileReader.jl")
 include("./LineReader.jl")
+include("./Utils.jl")
 using BenchmarkTools
 
 function gen_data(copies::Int64)
@@ -56,6 +57,19 @@ function viewRead(f::String; buffer_size::Int=10_000)
     return c
 end
 
+function parseInts()
+    f = "../data/numbs.txt"
+    h = open(f, "w")
+    write(h, "1\n13\t15\t18\n11\t10\t15\n"^10000 )
+    close(h)
+    c = 0
+    for line in eachlineV(f)
+        for item in splitV(line, '\t')
+            c += UInt32V(item) == UInt32(10)
+        end 
+    end
+end
+
 
 function benchmark()
     gen_data(1_000_000)
@@ -67,5 +81,5 @@ function benchmark()
     println("View buffer read: ", view_time)
 end
 
-
+parseInts()
 benchmark()

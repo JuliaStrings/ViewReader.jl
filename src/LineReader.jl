@@ -28,7 +28,7 @@ end
 
 @inline function Base.iterate(line::Line)
     # First iter so the first cut will be from 1:indexOfDelimiter
-    loc = find_delimiter(line.arr, line.delimiter, 1)
+    loc = find_delimiter(line.arr, line.delimiter,0)
     return StringView(view(line.arr, 1:loc-1)), loc
 end
 
