@@ -89,7 +89,7 @@ end
 
 function viewParse() 
     c = 0
-    for line in eachlineV("../data/numbs.txt")
+    for line in eachlineV(numbFile)
         for item in splitV(line, '\t')
             c += parseV(UInt32, item)
         end
@@ -99,7 +99,7 @@ end
 
 
 function run_test()
-    gen_string_data(1000)
+    
     println("Reading lines")
     @assert normalRead() == viewRead()
     print("Base eachline: ")
@@ -123,5 +123,6 @@ function run_test()
     
 end 
 
+gen_string_data(1000)
 gen_numb_data(1000)
-#run_test()
+run_test()

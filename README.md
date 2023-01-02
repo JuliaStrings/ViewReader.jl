@@ -17,7 +17,8 @@ To install use:
 ---
 
 ### Features
-Currently we only have some basic features like reading a line and splitting it
+Currently we only have some basic features like reading a line and splitting it.
+For examples on how to generate test data and run the codes below see [`src/test.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/test.jl)
 
 #### 1. eachlineV
 **`eachlineV(file_path::String; buffer_size::Int64=10_000)`**
@@ -67,12 +68,13 @@ As it's common to parse numbers from a line, and compare these we added some exa
 
 **Example**
 
-For example, to parse numbers as `UInt32` from a file
+For example, to parse numbers as `UInt32` from a file and sum them
+
 ```Julia
 c = 0
 for line in eachlineV("../data/numbs.txt")
     for item in splitV(line, '\t')
-        c += parseV(UInt32, item) == UInt32(10)
+        c += parseV(UInt32, item)
     end 
 end
 println(c)
