@@ -8,6 +8,14 @@ We basically implement a buffered reader where the buffer is a vector of UInt8. 
 
 ----
 
+
+### How it works
+To install use:
+
+`add https://github.com/rickbeeloo/ViewReader`
+
+---
+
 ### Features
 Currently we only have some basic features like reading a line and splitting it
 
