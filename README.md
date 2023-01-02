@@ -96,7 +96,8 @@ View parse:   2.046 ms (13 allocations: 20.32 KiB)
 ```
 
 To make this a bit more visual, we compared the base reader to the view reader.
-On the x-axis is the nubmer of lines in a file and on the y-axis the time in seconds to iterate
-over them:
+On the:
+- **x-axis** is the nubmer of lines in a file and 
+- **y-axis** the time in seconds to iterate over them
 
 ![BenchmarkImage](https://www.linkpicture.com/q/reader_benchmark.png)
