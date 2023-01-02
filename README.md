@@ -71,18 +71,18 @@ println(c)
 ```
 
 ### Benchmark
-We added a simple benchmark in `test.jl`, for my computer this produces:
+We added a simple benchmark in `test.jl`, for my computer (with gen_string_data(10_000_000) this produces:
 
 ```
 Reading lines
-Base eachline:   16.060 ms (400176 allocations: 12.99 MiB)
-View eachline:   3.051 ms (13 allocations: 20.30 KiB)
+Base eachline:   1.794 s (40016491 allocations: 1.27 GiB)
+View eachline:   376.598 ms (13 allocations: 20.30 KiB)
 
 Splitting lines
-Base split:   71.491 ms (1200176 allocations: 116.75 MiB)
-View split:   12.878 ms (13 allocations: 20.30 KiB)
+Base split:   8.763 s (120016491 allocations: 11.40 GiB)
+View split:   1.443 s (13 allocations: 20.30 KiB)
 
 Number parse
-Base parse:   6.892 ms (90016 allocations: 8.62 MiB)
-View parse:   1.929 ms (13 allocations: 20.32 KiB)
+Base parse:   7.160 ms (90016 allocations: 8.62 MiB)
+View parse:   2.046 ms (13 allocations: 20.32 KiB)
 ```

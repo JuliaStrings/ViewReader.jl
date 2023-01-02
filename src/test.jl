@@ -99,7 +99,7 @@ end
 
 
 function run_test()
-    gen_string_data(100_000)
+    gen_string_data(1000)
     println("Reading lines")
     @assert normalRead() == viewRead()
     print("Base eachline: ")
