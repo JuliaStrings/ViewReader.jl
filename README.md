@@ -4,7 +4,7 @@ Read files without making new allocations for each line.
 ----
 
 ### How it works
-We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top these vectors we use the amazing  [StringViews](https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see `FileReader.jl`. NOTE, for this to work the `buffer_size` should be bigger than the longest line.
+We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top of these vectors we use the amazing  [StringViews](https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see `FileReader.jl`. *NOTE*, for this to work the `buffer_size` should be bigger than the longest line.
 
 ----
 
@@ -24,7 +24,7 @@ For examples on how to generate test data and run the codes below see [`src/test
 **`eachlineV(file_path::String; buffer_size::Int64=10_000)`**
 
 
-This function can be used just like the base[ `eachline` ](https://docs.julialang.org/en/v1/base/io-network/#Base.eachline " `eachline` ")in Julia. The argument `buffer_size` determines the size of the underlaying UInt8 vector. The `buffer_size` should be bigger than the longest line in a file. If this is uknown just use a big number like 1M. This function will throw a warning if no new line is found when the eof is not reached yet - giving a clue to increase the `buffer_size`. 
+This function can be used just like the base[ `eachline` ](https://docs.julialang.org/en/v1/base/io-network/#Base.eachline " `eachline` ") in Julia. The argument `buffer_size` determines the size of the underlaying UInt8 vector. The `buffer_size` should be bigger than the longest line in a file. If this is uknown just use a big number like 1M. This function will throw a warning if no new line is found when the eof is not reached yet - giving a clue to increase the `buffer_size`. 
 
 **Example**
 
@@ -40,7 +40,7 @@ end
 **`splitV(line::Sview, delimiter::Char)`**
 
 
-Similar to the base `split`, although we currently only support a single character (not a string).
+Similar to the base [`split`](https://docs.julialang.org/en/v1/base/strings/#Base.split), although we currently only support a single character (not a string).
 
 **Example**
 
@@ -64,7 +64,8 @@ println(c)
 **`parseV(t::Type, lineSub::Sview)`**
 
 
-As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see `Utils.jl`)
+As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see `Utils.jl`).
+This works identical to the base [`parse`](https://docs.julialang.org/en/v1/base/numbers/#Base.parse)
 
 **Example**
 
@@ -81,7 +82,7 @@ println(c)
 ```
 
 ### Benchmark
-We added a simple benchmark in `test.jl`, for my computer (with gen_string_data(10_000_000) this produces:
+We added a simple benchmark in [`src/test.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/test.jl), for my computer (with gen_string_data(10_000_000) this produces:
 
 ```
 Reading lines
