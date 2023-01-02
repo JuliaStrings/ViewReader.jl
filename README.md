@@ -9,7 +9,7 @@ We basically implement a buffered reader where the buffer is a vector of UInt8. 
 ----
 
 
-### How it works
+### Install
 To install use:
 
 `add https://github.com/rickbeeloo/ViewReader`
