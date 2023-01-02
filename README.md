@@ -18,6 +18,7 @@ Currently we only have some basic features like reading a line and splitting it
 This function can be used just like the base[ `eachline` ](https://docs.julialang.org/en/v1/base/io-network/#Base.eachline " `eachline` ")in Julia. The argument `buffer_size` determines the size of the underlaying UInt8 vector. The `buffer_size` should be bigger than the longest line in a file. If this is uknown just use a big number like 1M. This function will throw a warning if no new line is found when the eof is not reached yet - giving a clue to increase the `buffer_size`. 
 
 **Example**
+
 ```Julia
 for line in eachlineV("test.txt", buffer_size=100_000)
     println(line)
@@ -33,6 +34,7 @@ end
 Similar to the base `split`, although we currently only support a single character (not a string).
 
 **Example**
+
 For example to check how often we see the string "TARGET" at column 3 in a given file 
 ```Julia
 
@@ -56,6 +58,7 @@ println(c)
 As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see `Utils.jl`)
 
 **Example**
+
 For example, to parse numbers as `UInt32` from a file
 ```Julia
 c = 0
