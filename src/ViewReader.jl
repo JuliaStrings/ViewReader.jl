@@ -1,5 +1,5 @@
 module ViewReader
-export eachLineV
+export eachlineV
 export splitV 
 include("./FileReader.jl")
 include("./LineReader.jl")
