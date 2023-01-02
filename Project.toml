@@ -2,3 +2,7 @@ name = "ViewReader"
 uuid = "01dda99d-94d4-4c0d-be83-8ce7c9702270"
 authors = ["codegodz <biobeeloo@gmail.com>"]
 version = "0.1.0"
+
+[deps]
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+StringViews = "354b36f9-a18e-4713-926e-db85100087ba"
