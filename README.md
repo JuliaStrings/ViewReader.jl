@@ -69,3 +69,19 @@ c = 0
 end
 println(c)
 ```
+
+### Benchmark
+We added a simple benchmark in `test.jl`, for my computer this produces:
+
+> Reading lines
+Base eachline:   16.060 ms (400176 allocations: 12.99 MiB)
+View eachline:   3.051 ms (13 allocations: 20.30 KiB)
+
+>Splitting lines
+Base split:   71.491 ms (1200176 allocations: 116.75 MiB)
+View split:   12.878 ms (13 allocations: 20.30 KiB)
+
+>Number parse
+Base parse:   6.892 ms (90016 allocations: 8.62 MiB)
+View parse:   1.929 ms (13 allocations: 20.32 KiB)
+

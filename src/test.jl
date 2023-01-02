@@ -4,42 +4,31 @@ include("./LineReader.jl")
 include("./Utils.jl")
 using BenchmarkTools
 
-function gen_data(copies::Int64)
-    open("../data/test.txt", "w") do handle
-        txt = "Text\twithout\tletter\nbla\tbla\tTARGET\tbla\tbla\nblablabla\n"
+const stringFile = "../data/test.txt"
+const numbFile = "../data/numbs.txt"
+
+# To create some random line data
+function gen_string_data(copies::Int64)
+    open(stringFile, "w") do handle
+        txt = "Text\twithout\tletter\nbla\tbla\tTARGET\tbla\tbla\nblablabla\nTEST\n"
         corpus = txt^copies
         write(handle, corpus)
     end    
 end
 
-
-function normalSplit(f::String)
-    c = 0
-    for line in eachline(f)
-        for (i, item) in enumerate(split(line, '\t'))
-            if i == 3 && item == "TARGET"
-                c +=1 
-            end 
-        end
-    end 
-    return c
+# To create some random number data
+function gen_numb_data(copies::Int64)
+    open(numbFile, "w") do handle
+        write(h, "1\n13\t15\t18\n11\t10\t15\n"^copies)
+    end
 end
 
-function viewSplit(f::String; buffer_size::Int=10_000)
+#############################################################
+# File reading test
+#############################################################
+function normalRead()
     c = 0
-    for line in eachlineV(f, buffer_size=buffer_size)
-        for (i, item) in enumerate(splitV(line, '\t'))
-            if i == 3 && item == "TARGET"
-                c += 1
-            end 
-        end 
-    end 
-    return c
-end
-
-function normalRead(f::String)
-    c = 0
-    for line in eachline(f)
+    for line in eachline(stringFile)
         if line == "TEST"
             c += 1 
         end
@@ -47,9 +36,9 @@ function normalRead(f::String)
     return c
 end
 
-function viewRead(f::String; buffer_size::Int=10_000)
+function viewRead()
     c = 0
-    for line in eachlineV(f, buffer_size=buffer_size)
+    for line in eachlineV(stringFile, buffer_size=10_000)
         if line == "TEST"
             c +=1 
         end
@@ -57,29 +46,81 @@ function viewRead(f::String; buffer_size::Int=10_000)
     return c
 end
 
-function parseInts()
-    f = "../data/numbs.txt"
-    h = open(f, "w")
-    write(h, "1\n13\t15\t18\n11\t10\t15\n"^10000 )
-    close(h)
+#############################################################
+# File splitting test
+#############################################################
+function normalSplit()
     c = 0
-    for line in eachlineV(f)
-        for item in splitV(line, '\t')
-            c += UInt32V(item) == UInt32(10)
+    for line in eachline(stringFile)
+        for item in split(line, "\t")
+            if item == "bla"
+                c +=1
+            end 
         end 
+    end 
+    return c
+end
+
+function viewSplit()
+    c = 0
+    for line in eachlineV(stringFile)
+        for item in splitV(line, '\t')
+            if item == "bla"
+                c +=1 
+            end 
+        end
     end
+    return c
+end
+
+#############################################################
+# Integer parsing test
+#############################################################
+
+function normalParse()
+    c = 0
+    for line in eachline(numbFile)
+        for item in split(line, '\t')
+            c += parse(UInt32, item)
+        end 
+    end 
+    return c
+end
+
+function viewParse() 
+    c = 0
+    for line in eachlineV("../data/numbs.txt")
+        for item in splitV(line, '\t')
+            c += parseV(UInt32, item)
+        end
+    end
+    return c
 end
 
 
-function benchmark()
-    gen_data(1_000_000)
-    f = "../data/test.txt"
-    @assert normalRead(f) == viewRead(f) "result not the same"
-    normal_time = @belapsed normalRead("../data/test.txt")
-    view_time   = @belapsed viewRead("../data/test.txt")
-    println("Base read: ", normal_time)
-    println("View buffer read: ", view_time)
-end
+function run_test()
+    gen_string_data(100_000)
+    println("Reading lines")
+    @assert normalRead() == viewRead()
+    print("Base eachline: ")
+    @btime normalRead()
+    print("View eachline: ")
+    @btime viewRead()
 
-parseInts()
-benchmark()
+    println("\nSplitting lines")
+    @assert normalSplit() == viewSplit()
+    print("Base split: ")
+    @btime normalSplit()
+    print("View split: ")
+    @btime viewSplit()
+    
+    println("\nNumber parse")
+    @assert normalParse() == viewParse()
+    print("Base parse: ")
+    @btime normalParse()
+    print("View parse: ")
+    @btime viewParse()
+    
+end 
+
+run_test()
