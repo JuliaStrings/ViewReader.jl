@@ -26,7 +26,7 @@ end
 ----
 #### 2. splitV
 **`splitV(line::Sview, delimiter::Char)`**
-Sinilar to the base `split`, although we currently only support a single character (not a string).
+Similar to the base `split`, although we currently only support a single character (not a string).
 
 **Example**
 For example to check how often we see the string "TARGET" at column 3 in a given file 
