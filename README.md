@@ -1,5 +1,5 @@
 # ViewReader
-Read files without making new allocations for each line.
+A tiny package to read files without making new allocations for each line.
 
 ----
 

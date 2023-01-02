@@ -41,7 +41,7 @@ end
 end
 
 # For now this only support a single Char, but technically 
-# we can just expand this of an arbitrary String
+# we can just expand this to an arbitrary String
 @inline function splitV(line::Sview, delimiter::Char)
     length(line) > 0 || error("Empty line given")
     return Line(line.data, UInt8(delimiter))
