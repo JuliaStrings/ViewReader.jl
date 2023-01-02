@@ -1,8 +1,7 @@
 ###########################################################################
 #  The code to split lines
-#   - for now this only works by returning a view of Uint8 rather than the
-#   - StringView as using StringView is even slower than regular line split
-#   - don't get why yet
+#   - This code will use the underlaying UInt8 array of a StringView
+#   - and split the line on a specified delimiter
 ###########################################################################
 
 const Sview = StringView{SubArray{UInt8, 1, Vector{UInt8}, Tuple{UnitRange{Int64}}, true}}
@@ -18,8 +17,8 @@ function find_delimiter(line::Bview, delimiter::UInt8, state::Int)
     @inbounds for i in state+1:length(line)
         if line[i] == delimiter
             return i 
-        elseif i == length(line)
-            return i + 1 # For other del. we do -1 laster to exclude it hence + 1 here
+        elseif i == length(line) # i.e. last cut of this line
+            return i + 1 # For other del. we do -1 later to exclude it hence + 1 here
         end
     end
     # We only reach this if there is nothing in the iterator,
@@ -41,6 +40,8 @@ end
     return StringView(view(line.arr, state+1:loc-1)), loc
 end
 
+# For now this only support a single Char, but technically 
+# we can just expand this of an arbitrary String
 @inline function splitV(line::Sview, delimiter::Char)
     length(line) > 0 || error("Empty line given")
     return Line(line.data, UInt8(delimiter))

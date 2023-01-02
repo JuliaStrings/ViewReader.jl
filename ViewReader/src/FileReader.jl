@@ -2,11 +2,6 @@
 using StringViews
 using StaticArrays
 
-
-# const bview = SubArray{UInt8, 1, Vector{UInt8}, Tuple{UnitRange{Int64}}, true} 
-
-
-
 ###########################################################################
 #  Code to read from a file 
 ###########################################################################
@@ -40,7 +35,6 @@ function read_next_chunk!(reader::BufferedReader)
             reader.arr[i] = 0x00
         end   
     end   
-    return bytes_read
 end
 
 function find_newline(reader::BufferedReader, state::Int64)
@@ -64,27 +58,20 @@ function eachlineV(file_path::String; buffer_size::Int64=10_000)
     io =  open(file_path, "r")  
     
     # We will set up a buffered reader through which we 
-    # stream the file bytes, ~4x as fast as a regular reader
+    # stream the file bytes, >4x as fast as a regular reader
     reader = BufferedReader(io, buffer_size, buffer_size*2, buffer_arr)
 
     # Also populate the reader with the first chunk already 
-    bytes_read = read_next_chunk!(reader)
+    read_next_chunk!(reader)
     return reader
 end
 
 # Override in case we want to reuse buffers and handles
 function eachlineV(io::IOStream, buffer_arr::Vector{UInt8})
     iseven(length(buffer_arr)) || error("Buffer should have even length")
-
     buffer_size = length(buffer_arr) / 2
-    tot_alloc = length(buffer_arr)
-    
-    # We will set up a buffered reader through which we 
-    # stream the file bytes, ~4x as fast as a regular reader
     reader = BufferedReader(io, buffer_size, buffer_size*2, buffer_arr)
-
-    # Also populate the reader with the first chunk already 
-    bytes_read = read_next_chunk!(reader)
+    read_next_chunk!(reader)
     return reader
 end
 
