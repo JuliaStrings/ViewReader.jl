@@ -4,7 +4,7 @@ Read files without making new allocations for each line.
 ----
 
 ### How it works
-We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top these vectors we use the amazing  [StringView](http://https://github.com/JuliaStrings/StringViews.jl "StringView") package to view and compare strings without any allocations. For more detail of the actual implementation see `FileReader.jl`. NOTE, for this to work the `buffer_size` should be bigger than the longest line.
+We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top these vectors we use the amazing  [StringViews](http://https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see `FileReader.jl`. NOTE, for this to work the `buffer_size` should be bigger than the longest line.
 
 ----
 
