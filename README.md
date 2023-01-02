@@ -17,9 +17,9 @@ This function can be used just like the base[ `eachline` ](https://docs.julialan
 
 **Example**
 ```Julia
-    for line in eachlineV("test.txt", buffer_size=100_000)
-        println(line)
-    end
+for line in eachlineV("test.txt", buffer_size=100_000)
+    println(line)
+end
 ```
 (*Obviously it makes more sense to do comparisons here like `like == "X"` as printing will also allocate*)
 
@@ -33,14 +33,15 @@ For example to check how often we see the string "TARGET" at column 3 in a given
 ```Julia
 c = 0
 for line in eachlineV("test.txt", buffer_size=100_000)
-        for (i, item) in enumerate(splitV(line, '\t'))  # <- splitV
-            if i == 3 && item == "TARGET"
-                c += 1
-            end 
+    for (i, item) in enumerate(splitV(line, '\t'))  # <- splitV
+        if i == 3 && item == "TARGET"
+            c += 1
         end 
     end 
-    return c
+end 
+println(c)
 ```
+
 ----
 
 #### 3. *X*Int*X*V
@@ -52,10 +53,9 @@ For example, to parse numbers as `UInt32` from a file
 ```Julia
 c = 0
  for line in eachlineV(f)
-        for item in splitV(line, '\t')
-            println("X: ", item)
-            c += UInt32V(item) == UInt32(10)
-        end 
-    end
-    println(c)
-	```
+    for item in splitV(line, '\t')
+        c += UInt32V(item) == UInt32(10)
+    end 
+end
+println(c)
+```
