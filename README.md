@@ -99,4 +99,4 @@ To make this a bit more visual, we compared the base reader to the view reader.
 On the x-axis is the nubmer of lines in a file and on the y-axis the time in seconds to iterate
 over them:
 
-![BenchmarkImage](https://www.linkpicture.com/view.php?img=LPic63b362341b2701362749980)
+![BenchmarkImage](https://www.linkpicture.com/q/reader_benchmark.png)
