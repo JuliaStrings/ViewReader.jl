@@ -19,7 +19,7 @@ end
 # To create some random number data
 function gen_numb_data(copies::Int64)
     open(numbFile, "w") do handle
-        write(h, "1\n13\t15\t18\n11\t10\t15\n"^copies)
+        write(handle, "1\n13\t15\t18\n11\t10\t15\n"^copies)
     end
 end
 
@@ -123,4 +123,5 @@ function run_test()
     
 end 
 
-run_test()
+gen_numb_data(1000)
+#run_test()

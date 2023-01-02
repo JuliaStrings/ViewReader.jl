@@ -28,7 +28,7 @@ This function can be used just like the base[ `eachline` ](https://docs.julialan
 **Example**
 
 ```Julia
-for line in eachlineV("test.txt", buffer_size=100_000)
+for line in eachlineV("../data/test.txt")
     println(line)
 end
 ```
@@ -47,7 +47,7 @@ For example to check how often we see the string "TARGET" at column 3 in a given
 ```Julia
 
 c = 0
-for line in eachlineV("test.txt", buffer_size=100_000)
+for line in eachlineV("../data/test.txt")
     for (i, item) in enumerate(splitV(line, '\t'))  # <- splitV
         if i == 3 && item == "TARGET"
             c += 1
@@ -59,8 +59,8 @@ println(c)
 
 ----
 
-#### 3. *X*Int*X*V
-**`XIntXV(lineSub::Sview)`**
+#### 3. parseV
+**`parseV(t::Type, lineSub::Sview)`**
 
 
 As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see `Utils.jl`)
@@ -70,9 +70,9 @@ As it's common to parse numbers from a line, and compare these we added some exa
 For example, to parse numbers as `UInt32` from a file
 ```Julia
 c = 0
- for line in eachlineV(f)
+for line in eachlineV("../data/numbs.txt")
     for item in splitV(line, '\t')
-        c += UInt32V(item) == UInt32(10)
+        c += parseV(UInt32, item) == UInt32(10)
     end 
 end
 println(c)
@@ -94,3 +94,9 @@ Number parse
 Base parse:   7.160 ms (90016 allocations: 8.62 MiB)
 View parse:   2.046 ms (13 allocations: 20.32 KiB)
 ```
+
+To make this a bit more visual, we compared the base reader to the view reader.
+On the x-axis is the nubmer of lines in a file and on the y-axis the time in seconds to iterate
+over them:
+
+![BenchmarkImage](https://www.linkpicture.com/view.php?img=LPic63b362341b2701362749980)
