@@ -11,6 +11,7 @@ We basically implement a buffered reader where the buffer is a vector of UInt8. 
 
 ### Install
 To install use:
+
 **Note**, this is still very beta, we tested it on a limited dataset.
 
 `add https://github.com/rickbeeloo/ViewReader`
