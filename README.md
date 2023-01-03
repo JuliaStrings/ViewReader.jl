@@ -4,7 +4,7 @@ A tiny package to read files without making new allocations for each line.
 ----
 
 ### How it works
-We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top of these vectors we use the amazing  [StringViews](https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see `FileReader.jl`. *NOTE*, for this to work the `buffer_size` should be bigger than the longest line.
+We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top of these vectors we use the amazing  [StringViews](https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see [`src/FileReader.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/FileReader.jl). *NOTE*, for this to work the `buffer_size` should be bigger than the longest line.
 
 ----
 
@@ -60,13 +60,15 @@ end
 println(c)
 ```
 
+(*Would be more efficient to break the loop when `i==3` is reached*)
+
 ----
 
 #### 3. parseV
 **`parseV(t::Type, lineSub::Sview)`**
 
 
-As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see `Utils.jl`).
+As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see [`src/Utils.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/Utils.jl)).
 This works identical to the base [`parse`](https://docs.julialang.org/en/v1/base/numbers/#Base.parse)
 
 **Example**
@@ -84,21 +86,28 @@ println(c)
 ```
 
 ### Benchmark
-We added a simple benchmark in [`src/test.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/test.jl), for my computer (with gen_string_data(10_000_000) this produces:
-
+We added a simple benchmark in [`src/test.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/test.jl), for my computer with:
+- `gen_string_data(10_000)`
+- `gen_numb_data(10_000)`
+- and a buffer_size of `10_000`
 ```
+
 Reading lines
-Base eachline:   1.794 s (40016491 allocations: 1.27 GiB)
-View eachline:   376.598 ms (13 allocations: 20.30 KiB)
+Base eachline:   1.437 ms (40028 allocations: 1.30 MiB)
+View eachline:   296.062 μs (13 allocations: 20.30 KiB)
 
 Splitting lines
-Base split:   8.763 s (120016491 allocations: 11.40 GiB)
-View split:   1.443 s (13 allocations: 20.30 KiB)
+Base split:   6.174 ms (120028 allocations: 11.68 MiB)
+View split:   1.073 ms (13 allocations: 20.30 KiB)
 
 Number parse
-Base parse:   7.160 ms (90016 allocations: 8.62 MiB)
-View parse:   2.046 ms (13 allocations: 20.32 KiB)
+Base parse:   6.114 ms (90016 allocations: 8.62 MiB)
+View parse:   1.924 ms (13 allocations: 20.32 KiB)
 ```
+
+A larger buffer will generally result in faster reading. However, at one
+point allocating the buffer will take more time than actually reading it
+so the best is just to try some buffer sizes and see where it works optimally
 
 To make this a bit more visual, we compared the base reader to the view reader.
 On the:

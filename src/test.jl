@@ -123,6 +123,6 @@ function run_test()
     
 end 
 
-gen_string_data(1000)
-gen_numb_data(1000)
+gen_string_data(10_000)
+gen_numb_data(10_000)
 run_test()
