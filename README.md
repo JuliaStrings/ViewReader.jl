@@ -51,11 +51,10 @@ For example to check how often we see the string "TARGET" at column 3 in a given
 
 c = 0
 for line in eachlineV("../data/test.txt")
-    for (i, item) in enumerate(splitV(line, '\t'))  # <- splitV
-        if i == 3 && item == "TARGET"
-            c += 1
-        end 
-    end 
+    data = splitV(line, '\t') 
+    if data[3] == "TARGET"
+        c +=1 
+    end
 end 
 println(c)
 ```

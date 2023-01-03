@@ -97,6 +97,19 @@ function viewParse()
     return c
 end
 
+#############################################################
+# get index test 
+#############################################################
+function viewIndex()
+    c = 0
+    for line in eachlineV(stringFile)
+        data = splitV(line, '\t')
+        c += parse(Int64, data[1])
+    end
+    return c
+end
+
+
 
 function run_test()
     

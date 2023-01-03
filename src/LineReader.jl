@@ -12,6 +12,17 @@ struct Line
     delimiter::UInt8
 end
 
+function Base.getindex(l::Line, index::Int64) 
+    for (i, item) in enumerate(l)
+        println(i, " -> ", item)
+        if i == index
+            return item 
+        end 
+    end 
+    error("Index out of range")
+end
+
+
 function find_delimiter(line::Bview, delimiter::UInt8, state::Int) 
     # State refers to the last location we scanned
     @inbounds for i in state+1:length(line)
