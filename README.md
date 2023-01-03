@@ -52,7 +52,7 @@ For example to check how often we see the string "TARGET" at column 3 in a given
 c = 0
 for line in eachlineV("../data/test.txt")
     data = splitV(line, '\t') 
-    if data[3] == "TARGET"
+    if data[1] == "TARGET"
         c +=1 
     end
 end 
