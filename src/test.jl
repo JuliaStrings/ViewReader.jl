@@ -102,37 +102,39 @@ end
 #############################################################
 function viewIndex()
     c = 0
-    for line in eachlineV(stringFile)
-        data = splitV(line, '\t')
-        c += parse(Int64, data[1])
-    end
+    for line in eachlineV("../data/test.txt")
+        data = splitV(line, '\t') 
+        if data[1] == "TARGET"
+            c +=1 
+        end
+    end 
     return c
 end
 
 
-
 function run_test()
     
-    println("Reading lines")
-    @assert normalRead() == viewRead()
-    print("Base eachline: ")
-    @btime normalRead()
-    print("View eachline: ")
-    @btime viewRead()
+    # println("Reading lines")
+    # @assert normalRead() == viewRead()
+    # print("Base eachline: ")
+    # @btime normalRead()
+    # print("View eachline: ")
+    # @btime viewRead()
 
-    println("\nSplitting lines")
-    @assert normalSplit() == viewSplit()
-    print("Base split: ")
-    @btime normalSplit()
-    print("View split: ")
-    @btime viewSplit()
+    # println("\nSplitting lines")
+    # @assert normalSplit() == viewSplit()
+    # print("Base split: ")
+    # @btime normalSplit()
+    # print("View split: ")
+    # @btime viewSplit()
     
-    println("\nNumber parse")
-    @assert normalParse() == viewParse()
-    print("Base parse: ")
-    @btime normalParse()
-    print("View parse: ")
-    @btime viewParse()
+    # println("\nNumber parse")
+    # @assert normalParse() == viewParse()
+    # print("Base parse: ")
+    # @btime normalParse()
+    # print("View parse: ")
+    # @btime viewParse()
+    @btime viewIndex()
     
 end 
 

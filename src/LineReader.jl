@@ -14,7 +14,6 @@ end
 
 function Base.getindex(l::Line, index::Int64) 
     for (i, item) in enumerate(l)
-        println(i, " -> ", item)
         if i == index
             return item 
         end 
