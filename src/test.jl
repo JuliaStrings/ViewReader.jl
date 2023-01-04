@@ -1,6 +1,6 @@
 
 include("./FileReader.jl")
-include("./LineReader.jl")
+include("./LineReader2.jl")
 include("./Utils.jl")
 using BenchmarkTools
 
@@ -9,8 +9,8 @@ const numbFile = "../data/numbs.txt"
 
 # To create some random line data
 function gen_string_data(copies::Int64)
-    open(stringFile, "w") do handle
-        txt = "Text\twithout\tletter\nbla\tbla\tTARGET\tbla\tbla\nblablabla\nTEST\n"
+    open(stringFile, "w") do handle#
+        txt = "Text\twithout\tletter\nbla\tbla\tTARGET\tbla\tbla\nblablabla\ttttt\nTEST\ttttt\n"
         corpus = txt^copies
         write(handle, corpus)
     end    
@@ -64,11 +64,13 @@ end
 function viewSplit()
     c = 0
     for line in eachlineV(stringFile)
-        for item in splitV(line, '\t')
-            if item == "bla"
-                c +=1 
-            end 
-        end
+        data = splitV(line, '\t')
+        println(atIndex(data, 2))
+        # for item in splitV(line, '\t')
+        #     if item == "bla"
+        #         c +=1 
+        #     end 
+        # end
     end
     return c
 end
@@ -102,42 +104,67 @@ end
 #############################################################
 function viewIndex()
     c = 0
-    for line in eachlineV("../data/test.txt")
-        data = splitV(line, '\t') 
-        if data[1] == "TARGET"
-            c +=1 
+    for line in eachlineV("")
+        if startswith(line, 'B')
+            data = splitV(line, '\t') 
+            c += Parsers.parse(UInt32, data[2])
         end
     end 
     return c
 end
 
 
+function incrementIndex()
+    c = 0
+    for line in eachlineV(stringFile)
+        data = splitV(line, '\t')
+        #c += length(atIndex(data, 1))
+        println(atIndex(data, 1))
+        println(atIndex(data, 2))
+    end
+    return c
+end
+
 function run_test()
     
-    # println("Reading lines")
-    # @assert normalRead() == viewRead()
-    # print("Base eachline: ")
-    # @btime normalRead()
-    # print("View eachline: ")
-    # @btime viewRead()
+    println("Reading lines")
+    @assert normalRead() == viewRead()
+    print("Base eachline: ")
+    @btime normalRead()
+    print("View eachline: ")
+    @btime viewRead()
 
-    # println("\nSplitting lines")
-    # @assert normalSplit() == viewSplit()
-    # print("Base split: ")
-    # @btime normalSplit()
-    # print("View split: ")
-    # @btime viewSplit()
+    println("\nSplitting lines")
+    @assert normalSplit() == viewSplit()
+    print("Base split: ")
+    @btime normalSplit()
+    print("View split: ")
+    @btime viewSplit()
     
-    # println("\nNumber parse")
-    # @assert normalParse() == viewParse()
-    # print("Base parse: ")
-    # @btime normalParse()
-    # print("View parse: ")
-    # @btime viewParse()
-    @btime viewIndex()
+    println("\nNumber parse")
+    @assert normalParse() == viewParse()
+    print("Base parse: ")
+    @btime normalParse()
+    print("View parse: ")
+    @btime viewParse()
     
 end 
 
-gen_string_data(10_000)
-gen_numb_data(10_000)
-run_test()
+# gen_string_data(10_000)
+# gen_numb_data(10_000)
+# run_test()
+# incrementIndex()
+
+function main() 
+    c = 0
+    for line in eachlineV(stringFile)
+        println("LINE NOW: ", line)
+        data = splitV(line, '\t')
+        println("index 1: ", StringView(atIndex(data, 1)))
+        println("index 2: ", StringView(atIndex(data, 2)))
+    end 
+    return c
+end
+
+gen_string_data(2)
+@btime main()
