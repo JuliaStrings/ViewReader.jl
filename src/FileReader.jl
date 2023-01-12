@@ -95,7 +95,7 @@ end
     end
     # I twould be odd to not reach EOF but still not find 
     # a full line, throw warning
-    r.stop == 0 && warn("Buffer probably too small")
+    r.stop == 0 && @warn ("Buffer probably too small")
     return StringView(view(reader.arr, r)), state
 end
 
