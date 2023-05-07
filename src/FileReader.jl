@@ -6,8 +6,8 @@ using StaticArrays
 #  Code to read from a file 
 ###########################################################################
 
-struct BufferedReader
-    io::IOStream
+struct BufferedReader{IOT <: IO}
+    io::IOT
     buffer::Int64
     tot_alloc::Int64
     arr::Vector{UInt8}
@@ -49,13 +49,10 @@ function find_newline(reader::BufferedReader, state::Int64)
     return 0:0, cur_stop
 end
 
-function eachlineV(file_path::String; buffer_size::Int64=10_000)
+function eachlineV(io::IO; buffer_size::Int64=10_000)
     # Allocate buffer array
     tot_alloc = buffer_size * 2
-    buffer_arr = zeros(UInt8, tot_alloc)     
-    
-    # Open the file handle for streaming
-    io =  open(file_path, "r")  
+    buffer_arr = zeros(UInt8, tot_alloc) 
     
     # We will set up a buffered reader through which we 
     # stream the file bytes, >4x as fast as a regular reader
@@ -66,10 +63,16 @@ function eachlineV(file_path::String; buffer_size::Int64=10_000)
     return reader
 end
 
+function eachlineV(file_path::String; buffer_size::Int64=10_000)
+    io = open(file_path, "r")
+    return eachlineV(io, buffer_size=buffer_size)
+end
+    
+
 # Override in case we want to reuse buffers and handles
-function eachlineV(io::IOStream, buffer_arr::Vector{UInt8})
+function eachlineV(io::IO, buffer_arr::Vector{UInt8})
     iseven(length(buffer_arr)) || error("Buffer should have even length")
-    buffer_size = length(buffer_arr) / 2
+    buffer_size = Int(length(buffer_arr) / 2)
     reader = BufferedReader(io, buffer_size, buffer_size*2, buffer_arr)
     read_next_chunk!(reader)
     return reader
