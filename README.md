@@ -66,6 +66,7 @@ println(c)
 #### 3. parseV
 **`parseV(t::Type, lineSub::Sview)`**
 
+Can also use [Parsers.jl](https://github.com/JuliaData/Parsers.jl)
 
 As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see [`src/Utils.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/Utils.jl)).
 This works identical to the base [`parse`](https://docs.julialang.org/en/v1/base/numbers/#Base.parse)
