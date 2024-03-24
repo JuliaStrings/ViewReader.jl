@@ -25,7 +25,7 @@ Currently we only have some basic features like reading a line and splitting it.
 For examples on how to generate test data and run the codes below see [`test/runtest.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/test/runtest.jl)
 
 #### 1. eachlineV
-**`eachlineV(file_path::String; buffer_size::Int64=10_000)`**
+**`eachlineV(file_path::String; buffer_size::Int=10_000)`**
 
 
 This function can be used just like the base[ `eachline` ](https://docs.julialang.org/en/v1/base/io-network/#Base.eachline " `eachline` ") in Julia. The argument `buffer_size` determines the size of the underlaying UInt8 vector. The `buffer_size` should be bigger than the longest line in a file. If this is uknown just use a big number like 1M. This function will throw a warning if no new line is found when the eof is not reached yet - giving a clue to increase the `buffer_size`.

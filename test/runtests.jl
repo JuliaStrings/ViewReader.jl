@@ -4,7 +4,7 @@ const stringFile = "data/test.txt"
 const numbFile = "data/numbs.txt"
 
 # To create some random line data
-function gen_string_data(copies::Int64)
+function gen_string_data(copies::Int)
     open(stringFile, "w") do handle
         txt = "Text\twithout\tletter\nbla\tbla\tTARGET\tbla\tbla\nblablabla\nTEST\n"
         corpus = txt^copies
@@ -13,7 +13,7 @@ function gen_string_data(copies::Int64)
 end
 
 # To create some random number data
-function gen_numb_data(copies::Int64)
+function gen_numb_data(copies::Int)
     open(numbFile, "w") do handle
         write(handle, "1\n13\t15\t18\n11\t10\t15\n"^copies)
     end

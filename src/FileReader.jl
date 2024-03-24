@@ -7,13 +7,13 @@ using StringViews
 
 struct BufferedReader{IOT <: IO}
     io::IOT
-    buffer::Int64
-    tot_alloc::Int64
+    buffer::Int
+    tot_alloc::Int
     arr::Vector{UInt8}
 end
 
 # Function to flip elements in an array to a specified offset(buffer size here)
-function flip!(arr::Vector{UInt8}, buffer::Int64)
+function flip!(arr::Vector{UInt8}, buffer::Int)
     @inbounds @simd for i in 1:buffer
         arr[i] = arr[i+buffer]
     end
@@ -36,7 +36,7 @@ function read_next_chunk!(reader::BufferedReader)
     end
 end
 
-function find_newline(reader::BufferedReader, state::Int64)
+function find_newline(reader::BufferedReader, state::Int)
     cur_stop = copy(state) + 1
 
     @inbounds for i in (state + 1):reader.tot_alloc
@@ -48,7 +48,7 @@ function find_newline(reader::BufferedReader, state::Int64)
     return 0:0, cur_stop
 end
 
-function eachlineV(io::IO; buffer_size::Int64=10_000)
+function eachlineV(io::IO; buffer_size::Int=10_000)
     # Allocate buffer array
     tot_alloc = buffer_size * 2
     buffer_arr = zeros(UInt8, tot_alloc)
@@ -62,7 +62,7 @@ function eachlineV(io::IO; buffer_size::Int64=10_000)
     return reader
 end
 
-function eachlineV(file_path::String; buffer_size::Int64=10_000)
+function eachlineV(file_path::String; buffer_size::Int=10_000)
     io = open(file_path, "r")
     return eachlineV(io, buffer_size=buffer_size)
 end
@@ -84,7 +84,7 @@ end
     return StringView(view(reader.arr, r)), state
 end
 
-@inline function Base.iterate(reader::BufferedReader, state::Int64)
+@inline function Base.iterate(reader::BufferedReader, state::Int)
     r, state = find_newline(reader, state)
     if r.start == 0
         if !eof(reader.io)
