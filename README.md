@@ -4,7 +4,9 @@ A tiny package to read files without making new allocations for each line.
 ----
 
 ### How it works
-We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top of these vectors we use the amazing  [StringViews](https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see [`src/FileReader.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/FileReader.jl). *NOTE*, for this to work the `buffer_size` should be bigger than the longest line.
+We basically implement a buffered reader where the buffer is a vector of UInt8. We then stream the bytes from the file through this buffer and search for newline characters. On top of these vectors we use the amazing  [StringViews](https://github.com/JuliaStrings/StringViews.jl "StringViews") package to view and compare strings without any allocations. For more detail of the actual implementation see [`src/FileReader.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/FileReader.jl). *NOTE*, for this to work the `buffer_size` should be bigger than the longest line.
+
+
 
 ----
 
@@ -14,13 +16,13 @@ To install use:
 
 **Note**, this is still very beta, we tested it on a limited dataset.
 
-`add https://github.com/rickbeeloo/ViewReader`
+`add https://github.com/JuliaStrings/ViewReader.jl`
 
 ---
 
 ### Features
 Currently we only have some basic features like reading a line and splitting it.
-For examples on how to generate test data and run the codes below see [`src/test.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/test.jl)
+For examples on how to generate test data and run the codes below see [`src/test.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/test.jl)
 
 #### 1. eachlineV
 **`eachlineV(file_path::String; buffer_size::Int64=10_000)`**
@@ -68,7 +70,7 @@ println(c)
 
 Can also use [Parsers.jl](https://github.com/JuliaData/Parsers.jl)
 
-As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see [`src/Utils.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/Utils.jl)).
+As it's common to parse numbers from a line, and compare these we added some examples on how to parse integers without allocating them (see [`src/Utils.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/Utils.jl)).
 This works identical to the base [`parse`](https://docs.julialang.org/en/v1/base/numbers/#Base.parse)
 
 **Example**
@@ -86,7 +88,7 @@ println(c)
 ```
 
 ### Benchmark
-We added a simple benchmark in [`src/test.jl`](https://github.com/rickbeeloo/ViewReader/blob/master/src/test.jl), for my computer with:
+We added a simple benchmark in [`src/test.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/test.jl), for my computer with:
 - `gen_string_data(10_000)`
 - `gen_numb_data(10_000)`
 - and a buffer_size of `10_000`
