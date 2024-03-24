@@ -4,5 +4,14 @@ authors = ["codegodz <biobeeloo@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StringViews = "354b36f9-a18e-4713-926e-db85100087ba"
+
+[compat]
+julia = "1.6"
+StringViews = "1.3"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
