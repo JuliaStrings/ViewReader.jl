@@ -41,7 +41,7 @@ function find_newline(reader::BufferedReader, state::Int)
 
     @inbounds for i in (state + 1):reader.tot_alloc
         if reader.arr[i] == 0x0a
-            return cur_stop:i-1, i
+            return cur_stop:(i > 1 && reader.arr[i-1] == 0x0d ? i-2 : i-1), i
         end
     end
 
