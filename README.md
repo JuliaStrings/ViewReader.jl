@@ -22,13 +22,13 @@ To install use:
 
 ### Features
 Currently we only have some basic features like reading a line and splitting it.
-For examples on how to generate test data and run the codes below see [`src/test.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/test.jl)
+For examples on how to generate test data and run the codes below see [`test/runtest.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/test/runtest.jl)
 
 #### 1. eachlineV
-**`eachlineV(file_path::String; buffer_size::Int64=10_000)`**
+**`eachlineV(file_path::String; buffer_size::Int=10_000)`**
 
 
-This function can be used just like the base[ `eachline` ](https://docs.julialang.org/en/v1/base/io-network/#Base.eachline " `eachline` ") in Julia. The argument `buffer_size` determines the size of the underlaying UInt8 vector. The `buffer_size` should be bigger than the longest line in a file. If this is uknown just use a big number like 1M. This function will throw a warning if no new line is found when the eof is not reached yet - giving a clue to increase the `buffer_size`. 
+This function can be used just like the base[ `eachline` ](https://docs.julialang.org/en/v1/base/io-network/#Base.eachline " `eachline` ") in Julia. The argument `buffer_size` determines the size of the underlaying UInt8 vector. The `buffer_size` should be bigger than the longest line in a file. If this is uknown just use a big number like 1M. This function will throw a warning if no new line is found when the eof is not reached yet - giving a clue to increase the `buffer_size`.
 
 **Example**
 
@@ -48,16 +48,16 @@ Similar to the base [`split`](https://docs.julialang.org/en/v1/base/strings/#Bas
 
 **Example**
 
-For example to check how often we see the string "TARGET" at column 3 in a given file 
+For example to check how often we see the string "TARGET" at column 3 in a given file
 ```Julia
 
 c = 0
 for line in eachlineV("../data/test.txt")
-    data = splitV(line, '\t') 
+    data = splitV(line, '\t')
     if data[1] == "TARGET"
-        c +=1 
+        c +=1
     end
-end 
+end
 println(c)
 ```
 
@@ -82,13 +82,13 @@ c = 0
 for line in eachlineV("../data/numbs.txt")
     for item in splitV(line, '\t')
         c += parseV(UInt32, item)
-    end 
+    end
 end
 println(c)
 ```
 
 ### Benchmark
-We added a simple benchmark in [`src/test.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/test.jl), for my computer with:
+We added a simple benchmark in [`test/runtest.jl`](https://github.com/JuliaStrings/ViewReader.jl/blob/master/src/test.jl), for my computer with:
 - `gen_string_data(10_000)`
 - `gen_numb_data(10_000)`
 - and a buffer_size of `10_000`
@@ -113,7 +113,5 @@ so the best is just to try some buffer sizes and see where it works optimally
 
 To make this a bit more visual, we compared the base reader to the view reader.
 On the:
-- **x-axis** is the nubmer of lines in a file and 
+- **x-axis** is the nubmer of lines in a file and
 - **y-axis** the time in seconds to iterate over them
-
-![BenchmarkImage](https://www.linkpicture.com/q/reader_benchmark.png)
